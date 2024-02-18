@@ -66,4 +66,12 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
 ## Comandos de Instalacion
+JWT Token
+https://www.binaryboxtuts.com/php-tutorials/laravel-8-json-web-tokenjwt-authentication/
 
+
+## Laravel Permission
+https://spatie.be/docs/laravel-permission/v5/installation-laravel
+composer require spatie/laravel-permission
+php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"
+ php artisan optimize:clear

@@ -28,9 +28,11 @@ class AuthController extends Controller
      */
     public function register() {
         $validator = Validator::make(request()->all(), [
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|confirmed|min:8',
+            'usu_names' => 'required',
+            'usu_apes' => 'required',
+            'usu_ci' => 'required',
+            'usu_email' => 'required|email|unique:users',
+            'password' => 'required|min:8',
         ]);
  
         if($validator->fails()){
@@ -38,8 +40,13 @@ class AuthController extends Controller
         }
  
         $user = new User;
-        $user->name = request()->name;
-        $user->email = request()->email;
+        $user->usu_names = request()->usu_names;
+        $user->usu_apes = request()->usu_apes;
+        $user->usu_ci = request()->usu_ci;
+        $user->usu_email = request()->usu_email;
+        $user->usu_direc = request()->usu_direc;
+        $user->usu_phone = request()->usu_phone;
+        $user->usu_especiality = request()->usu_especiality;
         $user->password = bcrypt(request()->password);
         $user->save();
  
@@ -54,7 +61,7 @@ class AuthController extends Controller
      */
     public function login()
     {
-        $credentials = request(['email', 'password']);
+        $credentials = request(['usu_email', 'password']);
  
         if (! $token = auth('api')->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
