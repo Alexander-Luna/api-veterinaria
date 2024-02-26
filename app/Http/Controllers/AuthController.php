@@ -1,13 +1,13 @@
 <?php
- 
+
 namespace App\Http\Controllers;
- 
+
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Validator;
- 
- 
+
+
 class AuthController extends Controller
 {
     /**
@@ -19,14 +19,15 @@ class AuthController extends Controller
     {
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
- 
- 
+
+
     /**
      * Register a User.
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function register() {
+    public function register()
+    {
         $validator = Validator::make(request()->all(), [
             'usu_names' => 'required',
             'usu_apes' => 'required',
@@ -34,11 +35,11 @@ class AuthController extends Controller
             'usu_email' => 'required|email|unique:users',
             'password' => 'required|min:8',
         ]);
- 
-        if($validator->fails()){
+
+        if ($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }
- 
+
         $user = new User;
         $user->usu_names = request()->usu_names;
         $user->usu_apes = request()->usu_apes;
@@ -49,11 +50,11 @@ class AuthController extends Controller
         $user->usu_especiality = request()->usu_especiality;
         $user->password = bcrypt(request()->password);
         $user->save();
- 
+
         return response()->json($user, 201);
     }
- 
- 
+
+
     /**
      * Get a JWT via given credentials.
      *
@@ -62,14 +63,14 @@ class AuthController extends Controller
     public function login()
     {
         $credentials = request(['usu_email', 'password']);
- 
-        if (! $token = auth('api')->attempt($credentials)) {
+
+        if (!$token = auth('api')->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
- 
+
         return $this->respondWithToken($token);
     }
- 
+
     /**
      * Get the authenticated User.
      *
@@ -79,7 +80,11 @@ class AuthController extends Controller
     {
         return response()->json(auth('api')->user());
     }
- 
+    public function list()
+    {
+        $user = User::all();
+        return response()->json(['users' => $user,]);
+    }
     /**
      * Log the user out (Invalidate the token).
      *
@@ -88,10 +93,10 @@ class AuthController extends Controller
     public function logout()
     {
         auth()->logout();
- 
+
         return response()->json(['message' => 'Successfully logged out']);
     }
- 
+
     /**
      * Refresh a token.
      *
@@ -101,7 +106,7 @@ class AuthController extends Controller
     {
         return $this->respondWithToken(auth()->refresh());
     }
- 
+
     /**
      * Get the token array structure.
      *
@@ -115,7 +120,7 @@ class AuthController extends Controller
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth('api')->factory()->getTTL() * 60,
-            'user'=> auth('api')->user(),
+            'user' => auth('api')->user(),
         ]);
     }
 }

@@ -74,4 +74,6 @@ https://www.binaryboxtuts.com/php-tutorials/laravel-8-json-web-tokenjwt-authenti
 https://spatie.be/docs/laravel-permission/v5/installation-laravel
 composer require spatie/laravel-permission
 php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"
- php artisan optimize:clear
+php artisan optimize:clear
+
+php artisan migrate:fresh --seed --seeder=PermissionsDemoSeeder
